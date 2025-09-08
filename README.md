@@ -11,34 +11,34 @@ The goal is to practice working with **GraphQL, JWT authentication, and React**,
 
 The app allows me to:
 
-- Log in with my **Zone01 credentials** (username/email + password).  
-- Fetch my own data securely using the GraphQL API with a JWT token.  
+- Log in with my **Zone01 credentials** (username/email + password).
+- Fetch my own data securely using the GraphQL API with a JWT token.
 - View key information about my progress, such as:
   - XP earned
   - Grades
   - Audit ratios
-  - Skills  
-- Visualize progress with **SVG-based statistic graphs** (at least two different types).  
-- Log out safely.  
+  - Skills
+- Visualize progress with **SVG-based statistic graphs** (at least two different types).
+- Log out safely.
 
 ---
 
 ## 📊 Features
 
-- **Authentication**: Login & logout with JWT.  
-- **GraphQL Queries**: Simple, nested, and argument-based queries.  
-- **Profile Dashboard**: Displays my data in a clean UI.  
-- **Statistic Graphs**: SVG graphs for XP over time, project results, etc.  
-- **Deployment**: Hosted on Netlify/GitHub Pages (TBD).  
+- **Authentication**: Login & logout with JWT.
+- **GraphQL Queries**: Simple, nested, and argument-based queries.
+- **Profile Dashboard**: Displays my data in a clean UI.
+- **Statistic Graphs**: SVG graphs for XP over time, project results, etc.
+- **Deployment**: Hosted on Netlify/GitHub Pages (TBD).
 
 ---
 
 ## 🛠️ Tech Stack
 
-- [React](https://reactjs.org/) – UI framework  
-- [GraphQL](https://graphql.org/) – API query language  
-- [JWT](https://jwt.io/) – authentication  
-- [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG) – graphs and stats  
+- [React](https://reactjs.org/) – UI framework
+- [GraphQL](https://graphql.org/) – API query language
+- [JWT](https://jwt.io/) – authentication
+- [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG) – graphs and stats
 
 ---
 
@@ -49,7 +49,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/adaken4/graphql.git
 cd graphql
-````
+```
 
 Install dependencies:
 
@@ -74,11 +74,11 @@ Hosting options considered: **Netlify, GitHub Pages, or Vercel**.
 
 ## 📌 Project Objectives
 
-* Learn and practice **GraphQL** queries.
-* Implement **JWT-based authentication**.
-* Build a responsive **React front-end**.
-* Apply **UI/UX principles** for clarity and usability.
-* Gain hands-on experience with **hosting & deployment**.
+- Learn and practice **GraphQL** queries.
+- Implement **JWT-based authentication**.
+- Build a responsive **React front-end**.
+- Apply **UI/UX principles** for clarity and usability.
+- Gain hands-on experience with **hosting & deployment**.
 
 ---
 
