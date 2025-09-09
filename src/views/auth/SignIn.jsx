@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import {
@@ -14,7 +14,7 @@ export default function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (data) => {
     try {
@@ -23,7 +23,7 @@ export default function SignIn() {
 
       await signIn(data.email, data.password);
 
-      // navigate("/dashboard");
+      navigate("/profile");
     } catch (error) {
       setErrors({ submit: error.message });
     } finally {
