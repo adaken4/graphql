@@ -1,0 +1,12 @@
+query {
+  user {
+    attrs
+    auditRatio
+    login
+  }
+
+  transaction (where: { type: {_eq: "xp" }, eventId: {_eq: 75}}) { 
+    amount
+    createdAt
+  }
+}
