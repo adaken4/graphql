@@ -1,21 +1,161 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { signOut } from "../../api/auth";
+import fetchUserProfile from "../../api/profile";
+import { getToken, bytesToMB } from "../../utils/utils";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../../components/ui/card";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
+
+  // State for storing user data
+  const [user, setUser] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+
+  // Fetch user profile on mount
+  useEffect(() => {
+    async function loadUserProfile() {
+      const token = getToken();
+      if (!token) {
+        // Redirect to login if no token
+        navigate("/");
+        return;
+      }
+      try {
+        const userProfile = await fetchUserProfile(token);
+        // Normalize user data from returned attrs and other fields
+        const userData = {
+          name: `${userProfile.user[0].attrs.firstName} ${userProfile.user[0].attrs.middleName} ${userProfile.user[0].attrs.lastName}`,
+          email: userProfile.user[0].attrs.email,
+          phone: userProfile.user[0].attrs.phone,
+          auditRatio: userProfile.user[0].auditRatio.toFixed(2),
+          login: userProfile.user[0].login,
+        };
+        setUser(userData);
+        setTransactions(userProfile.transaction);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        // On-error, redirect to login
+        navigate("/");
+      }
+    }
+    loadUserProfile();
+  }, [navigate]);
 
   const handleSignOut = () => {
     signOut();
     navigate("/");
   };
 
+  const { _, totalXP } = prepareXPData(transactions, 500, 200);
+
+  if (!user)
+    return (
+      <div className="flex items-center justify-center">
+        <p>Loading profile...</p>
+      </div>
+    );
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-green-50/30 p-4">
-      <p className="m-4">Profile Page</p>
-      <Button className="bg-red-500 hover:bg-red-600 m4" onClick={handleSignOut}>
-        Sign Out
-      </Button>
+    <div className="grid grid-cols-4 gap-4 p-4 bg-gray-200">
+      {/* Profile header */}
+      <div className="col-span-4 mb-8">
+        <div className="flex items-center space-x-6 p-6 rounded-xl bg-white shadow-md">
+          <div className="relative">
+            <img
+              src=""
+              alt={user.login}
+              className="w-28 h-28 rounded-full border-4 border-white shadow-lg bg-gray-300"
+            />
+            {/* Optional: Add an online status indicator */}
+            <span className="absolute bottom-1 right-1 block h-4 w-4 rounded-full ring-2 ring-white bg-green-500"></span>
+          </div>
+          <div className="flex-1">
+            <h2 className="text-3xl font-extrabold text-gray-900">
+              {user.name}
+            </h2>
+            <p className="text-lg text-gray-600 mt-1">{user.email}</p>
+            <p className="text-sm text-gray-500 mt-1">{user.phone}</p>
+          </div>
+          <Button
+            className="bg-red-500 hover:bg-red-600 transition-colors duration-200"
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </Button>
+        </div>
+      </div>
+
+      <Card className="col-span-2 bg-white rounded-xl shadow-md p-6 transition-transform hover:scale-[1.02] text-center">
+        <CardHeader className="p-0 mb-4">
+          <CardTitle className="text-xl font-semibold text-gray-800">
+            Audit Ratio
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <p className="text-5xl font-extrabold text-blue-600">
+            {user.auditRatio}
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            Passed Audits / Total Audits
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-2 bg-white rounded-xl shadow-md p-6 transition-transform hover:scale-[1.02] text-center">
+        <CardHeader className="p-0 mb-4">
+          <CardTitle className="text-xl font-semibold text-gray-800">
+            Total XP
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <p className="text-5xl font-extrabold text-blue-600">
+            {bytesToMB(totalXP)} MB
+          </p>
+          <p className="text-sm text-gray-500 mt-2">
+            Cumulative Gained XP Points
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
+}
+
+function prepareXPData(transactions, width, height) {
+  if (!transactions || transactions.length === 0) {
+    return { points: [], totalXP: 0 };
+  }
+  // sort by date
+  const sorted = [...transactions].sort(
+    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+  );
+
+  let cumulative = 0;
+  const withCumulative = sorted.map((t) => {
+    cumulative += t.amount;
+    return { ...t, cumulative };
+  });
+
+  const totalXP = withCumulative.length
+    ? withCumulative[withCumulative.length - 1].cumulative
+    : 0;
+
+  const maxXP = totalXP;
+  const minDate = new Date(withCumulative[0].createdAt);
+  const maxDate = new Date(withCumulative[withCumulative.length - 1].createdAt);
+
+  const points = withCumulative.map((t) => {
+    const x =
+      ((new Date(t.createdAt) - minDate) / (maxDate - minDate || 1)) * width;
+    const y = height - (t.cumulative / maxXP) * height;
+    return [x, y];
+  });
+
+  return { points, totalXP };
 }
