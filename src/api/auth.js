@@ -1,3 +1,5 @@
+"use strict";
+
 export async function signIn(usernameOrEmail, password) {
   const credentials = btoa(`${usernameOrEmail}:${password}`);
 
