@@ -4,7 +4,7 @@ export function Card({ children, className = "", ...props }) {
   return (
     <div
       {...props}
-      className={`rounded-lg border border-gray-200 bg-white shadow-sm ${className}`}
+      className={`rounded-lg ${className}`}
     >
       {children}
     </div>
@@ -13,7 +13,7 @@ export function Card({ children, className = "", ...props }) {
 
 export function CardHeader({ children, className = "", ...props }) {
   return (
-    <div {...props} className={`border-b border-gray-200 p-4 ${className}`}>
+    <div {...props} className={`p-4 ${className}`}>
       {children}
     </div>
   );
