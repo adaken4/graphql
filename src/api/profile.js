@@ -12,6 +12,9 @@ export default async function fetchUserProfile(token) {
           amount
           createdAt
         }
+        audit(where: { grade: { _is_null: false } }) {
+          grade
+        }
       }
     `;
 

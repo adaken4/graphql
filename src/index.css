@@ -1,4 +1,8 @@
 @import "tailwindcss";
+:root {
+  --blue: #155dfc;
+  --red: #fb2c36;
+}
 
 @layer base {
   *,
