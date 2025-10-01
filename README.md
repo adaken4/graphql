@@ -2,6 +2,8 @@
 
 A personal profile web application built with **React** that fetches and displays my progress data from the [Zone01 Kisumu GraphQL API](https://learn.zone01kisumu.ke/api/graphql-engine/v1/graphql).
 
+[Live Link](https://68dd3dd9d16da4835a0175b6--guileless-tanuki-62842a.netlify.app/)
+
 ---
 
 ## 🚀 Project Overview
